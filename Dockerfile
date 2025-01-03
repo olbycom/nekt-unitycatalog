@@ -55,6 +55,13 @@ USER $USER
 # Copy remaining directories here for caching optimization
 COPY --chown=$USER:$USER --parents bin/ etc/ $HOME/
 
+COPY --chown=$USER:$USER entrypoint.sh $HOME/entrypoint.sh
+RUN chmod +x $HOME/entrypoint.sh
+
 WORKDIR $HOME
 
-CMD ["./bin/start-uc-server"]
+USER root
+RUN apk add --no-cache postgresql-client
+USER $USER
+
+ENTRYPOINT [ "./entrypoint.sh",  "./bin/start-uc-server"]
