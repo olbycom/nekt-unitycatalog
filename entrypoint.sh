@@ -49,16 +49,6 @@ if [ -z "$UNITY_CATALOG_S3_BUCKET_ACCESS_ROLE_ARN" ]; then
   exit 1
 fi
 
-if [ -z "$UNITY_CATALOG_S3_BUCKET_ACCESS_KEY" ]; then
-  echo "Error: UNITY_CATALOG_S3_BUCKET_ACCESS_KEY is not set"
-  exit 1
-fi
-
-if [ -z "$UNITY_CATALOG_S3_BUCKET_SECRET_KEY" ]; then
-  echo "Error: UNITY_CATALOG_S3_BUCKET_SECRET_KEY is not set"
-  exit 1
-fi
-
 # create schema if not exists
 
 PGPASSWORD=$POSTGRES_PASSWORD psql -h $POSTGRES_HOST -p $POSTGRES_PORT -U $POSTGRES_USERNAME -d $POSTGRES_DATABASE -c "CREATE SCHEMA IF NOT EXISTS $POSTGRES_SCHEMA;"
@@ -95,8 +85,8 @@ echo "s3.bucketPath.0=$UNITY_CATALOG_S3_BUCKET_PATH" >> $SERVER_PROPERTIES_FILE
 echo "s3.awsRoleArn.0=$UNITY_CATALOG_S3_BUCKET_ACCESS_ROLE_ARN" >> $SERVER_PROPERTIES_FILE
 
 # Optional (If blank, it will use DefaultCredentialsProviderChain)
-echo "s3.accessKey.0=$UNITY_CATALOG_S3_BUCKET_ACCESS_KEY" >> $SERVER_PROPERTIES_FILE
-echo "s3.secretKey.0=$UNITY_CATALOG_S3_BUCKET_SECRET_KEY" >> $SERVER_PROPERTIES_FILE
+echo "s3.accessKey.0=" >> $SERVER_PROPERTIES_FILE
+echo "s3.secretKey.0=" >> $SERVER_PROPERTIES_FILE
 
 # Test Only (If you provide a session token, it will just use those session creds, no downscoping)
 echo "s3.sessionToken.0=" >> $SERVER_PROPERTIES_FILE
